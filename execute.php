@@ -26,11 +26,8 @@ $response = "";
 if(isset($message['text']))
 
 {
-  /*NUOVO PARSER:
-  $text_url_array = parse_text($text);*/
-	
-  // Remove all illegal characters from a url
-  $url = $text($url, FILTER_SANITIZE_URL);
+  //NUOVO PARSER:
+  $text_url_array = parse_text($text);
 	
   if(strpos($text, "/start") === 0 )
   {
@@ -49,15 +46,6 @@ if(isset($message['text']))
 	$response = "Ecco fatto: $obj_desc\n$worldsym  $url_affiliate";
 	
   }
-   else
-  {
-	    // Validate url
-  	if (filter_var($url, FILTER_VALIDATE_URL)) {
-		$response = "Link Valido!"
-  	} else {
-	  	$response = "Manda un link valido!"
-  	}
-   }
 }
 /*
 *
