@@ -26,16 +26,12 @@ $response = "";
 if(isset($message['text']))
 
 {
-  //NUOVO PARSER:
-  $text_url_array = parse_text($text);
-  $array1 = explode('.', $text_url_array[1]);
-  if(strcmp($array1,"www") === 0 || strcmp($array1,"http://www") === 0 || strcmp($array1,"https://www") === 0)
-  {
-  	$dominio = $array1[1];
-  } else {
-  	$dominio = $array1[0];
-  }
-
+  /*NUOVO PARSER:
+  $text_url_array = parse_text($text);*/
+	
+  // Remove all illegal characters from a url
+  $url = $text($url, FILTER_SANITIZE_URL);
+	
   if(strpos($text, "/start") === 0 )
   {
 	$response = "Ciao $firstname! \nMandami un link Amazon o condividilo direttamente con me da altre app! \nTi rispondero' con il link affiliato del mio padrone!";
@@ -53,21 +49,14 @@ if(isset($message['text']))
 	$response = "Ecco fatto: $obj_desc\n$worldsym  $url_affiliate";
 	
   }
-   elseif(strpos($text, "/link") === 0 && strlen($text)<6 )
+   else
   {
-	   $response = "Incolla l'URL da convertire dopo il comando /link";
-   }
-   elseif(strcmp($dominio,"amazon") === 0)
-  {
-	//new parser:
-	$url_to_parse = $text_url_array[1];
-	$url_affiliate = set_referral_URL($url_to_parse);
-	$faccinasym = json_decode('"\uD83D\uDE0A"');
-	$linksym =  json_decode('"\uD83D\uDD17"');
-	$pollicesym =  json_decode('"\uD83D\uDC4D"');
-	$worldsym = json_decode('"\uD83C\uDF0F"');
-	$obj_desc = $text_url_array[0];
-	$response = "Ecco fatto: $obj_desc\n$worldsym  $url_affiliate";
+	    // Validate url
+  	if (filter_var($url, FILTER_VALIDATE_URL)) {
+		$response = "Link Valido!"
+  	} else {
+	  	$response = "Manda un link valido!"
+  	}
    }
 }
 /*
